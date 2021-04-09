@@ -12,7 +12,7 @@
 const generateMutationQuery = (data, projectName, columnName, contentId, action) => {
 	let allProjects = [];
 
-	if (projectName === "") {
+	if (projectName === '') {
 		allProjects = (data.projectCards.nodes && data.projectCards.nodes.flatMap(node => node.project)) || [];
 	} else {
 		// All the projects found in organisation and repositories

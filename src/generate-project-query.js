@@ -26,7 +26,7 @@ const projectQuery = (url, eventName, project) => (`query {
 						}
 					}
 				}
-				repository {
+				${project === '' ? '' : `repository {
 					projects( search: "${project}", first: 10, states: [OPEN] ) {
 						nodes {
 							name
@@ -55,6 +55,7 @@ const projectQuery = (url, eventName, project) => (`query {
 							}
 						}
 					}
+				}`
 				}
 			}
 		}
