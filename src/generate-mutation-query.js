@@ -1,3 +1,5 @@
+const projectDetector = require('./project-detector');
+
 /**
  * Get a list of columns for the matching project and columns names
  *
@@ -10,17 +12,26 @@
 // if this is important, we will need to refactor the function
 // eslint-disable-next-line max-params
 const generateMutationQuery = (data, projectName, columnName, contentId, action) => {
-	// All the projects found in organisation and repositories
-	const repoProjects = data.repository.projects.nodes || [];
-	const orgProjects = (data.repository.owner &&
+	const orgProjectResult = projectDetector.matchOrgProject(projectName);
+	let allProjects = [];
+
+	if (orgProjectResult) {
+		allProjects = (data.organization.project && [data.organization.project]) || [];
+	} else {
+		// All the projects found in organisation and repositories
+		const repoProjects = data.repository.projects.nodes || [];
+		const ownerProjects = (data.repository.owner &&
 		data.repository.owner.projects &&
 		data.repository.owner.projects.nodes) ||
 		[];
+		// Find matching projects
+		allProjects = [...repoProjects, ...ownerProjects]
+			.filter(project => project.name === projectName)
+			.flatMap(project => project);
+	}
 
-	// Find matching projects and columns for the card to move to
-	const endLocation = [...repoProjects, ...orgProjects]
-		.filter(project => project.name === projectName)
-		.flatMap(project => project)
+	// Find projects with the columnName for the card to move to
+	const endLocation = allProjects
 		.filter(project => {
 			const matchingColumns = project.columns.nodes
 				.filter(column => column.name === columnName);
@@ -45,7 +56,7 @@ const generateMutationQuery = (data, projectName, columnName, contentId, action)
 
 	// See if the card exists in the provided project
 	const currentLocation = data.projectCards.nodes
-		.filter(card => card.project.name === projectName);
+		.filter(card => card.project.id in cardLocations);
 
 	currentLocation.forEach(card => {
 		cardLocations[card.project.id].cardId = card.id;
