@@ -37,9 +37,9 @@ const generateMutationQuery = (data, projectName, columnName, contentId, action)
 	// Find projects with the columnName for the card to move to
 	const endLocation = allProjects
 		.filter(project => {
-			project.columns.nodes
+			return project.columns.nodes
 				.filter(column => column.name === columnName)
-				.length !== 0
+				.length !== 0;
 		});
 	// There are no locations for the card to move to
 	if (endLocation.length === 0) {
