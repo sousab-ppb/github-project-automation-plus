@@ -28,8 +28,8 @@
 	},
 	"homepage": "https://github.com/alex-page/github-project-automation-plus#readme",
 	"dependencies": {
-		"@actions/core": "^1.2.3",
-		"@actions/github": "^2.1.1"
+		"@actions/core": "^1.2.6",
+		"@actions/github": "^4.0.0"
 	},
 	"devDependencies": {
 		"@zeit/ncc": "^0.20.4",
