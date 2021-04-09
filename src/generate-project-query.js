@@ -25,6 +25,18 @@ const projectQuery = (url, eventName, project) => {
 					}
 				}
 			}
+			... on Organization {
+				project(number: ${orgProjectResult[2]}) {
+					name
+					id
+					columns(first: 100) {
+						nodes {
+							id
+							name
+						}
+					}
+				}
+			}
 		}
 		organization(login: "${orgProjectResult[1]}") {
 			project(number: ${orgProjectResult[2]}) {
