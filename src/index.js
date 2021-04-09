@@ -21,11 +21,11 @@ const generateMutationQuery = require('./generate-mutation-query');
 		// Get the column ID from searching for the project and card Id if it exists
 		const projectQuery = generateProjectQuery(url, eventName, project);
 
-		core.log(projectQuery);
+		console.log(projectQuery);
 
 		const {resource} = await octokit.graphql(projectQuery);
 
-		core.log(JSON.stringify(resource));
+		console.log(JSON.stringify(resource));
 
 		// A list of columns that line up with the user entered project and column
 		const mutationQueries = generateMutationQuery(resource, project, column, nodeId, action);
