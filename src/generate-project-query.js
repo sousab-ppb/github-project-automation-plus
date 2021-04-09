@@ -7,11 +7,7 @@ const projectDetector = require('./project-detector');
  * @param {string} eventName - The current event name
  * @param {string} project - The project to find
  */
-const projectQuery = (url, eventName, project) => {
-	const orgProjectResult = projectDetector.matchOrgProject(project);
-	let query = null;
-	if (orgProjectResult) {
-		query = `query {
+const projectQuery = (url, eventName, project) => (`query {
 		resource( url: "${url}" ) {
 			... on ${eventName === 'issues' ? 'Issue' : 'PullRequest'} {
 				projectCards {
@@ -27,47 +23,6 @@ const projectQuery = (url, eventName, project) => {
 									name
 								}
 							}
-						}
-					}
-				}
-			}
-			... on Organization {
-				project(number: ${orgProjectResult[2]}) {
-					name
-					id
-					columns(first: 100) {
-						nodes {
-							id
-							name
-						}
-					}
-				}
-			}
-		}
-		organization(login: "${orgProjectResult[1]}") {
-			project(number: ${orgProjectResult[2]}) {
-				name
-				id
-				columns(first: 100) {
-					nodes {
-						id
-						name
-					}
-				}
-			}
-		}
-	}`;
-	} else {
-		query = `query {
-		resource( url: "${url}" ) {
-			... on ${eventName === 'issues' ? 'Issue' : 'PullRequest'} {
-				projectCards {
-					nodes {
-						id
-						isArchived
-						project {
-							name
-							id
 						}
 					}
 				}
@@ -103,10 +58,6 @@ const projectQuery = (url, eventName, project) => {
 				}
 			}
 		}
-	}`;
-	}
-
-	return query;
-};
+	}`);
 
 module.exports = projectQuery;
