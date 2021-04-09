@@ -16,14 +16,14 @@ const generateMutationQuery = require('./generate-mutation-query');
 		const {eventName, nodeId, url} = getActionData(github.context);
 
 		// Create a method to query GitHub
-		const octokit = new github.GitHub(token);
+		const octokit = new github.getOctokit(token);
 
 		// Get the column ID from searching for the project and card Id if it exists
 		const projectQuery = generateProjectQuery(url, eventName, project);
 
 		console.log(projectQuery);
 
-		const {resource} = await octokit.graphql(projectQuery);
+		const {resource} = await octokit.graphql(projectQuery, {});
 
 		console.log(JSON.stringify(resource));
 
