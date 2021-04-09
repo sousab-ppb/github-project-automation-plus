@@ -16,7 +16,8 @@ const generateMutationQuery = (data, projectName, columnName, contentId, action)
 	let allProjects = [];
 
 	if (orgProjectResult) {
-		allProjects = (data.organization && data.organization.project && [data.organization.project]) || [];
+		allProjects = (data.projectCards.nodes && data.projectCards.nodes.flatMap(node => node.project)) || [];
+		// allProjects = (data.organization && data.organization.project && [data.organization.project]) || [];
 	} else {
 		// All the projects found in organisation and repositories
 		const repoProjects = data.repository.projects.nodes || [];

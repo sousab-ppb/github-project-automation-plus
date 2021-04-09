@@ -21,6 +21,12 @@ const projectQuery = (url, eventName, project) => {
 						project {
 							name
 							id
+							columns(first: 100) {
+								nodes {
+									id
+									name
+								}
+							}
 						}
 					}
 				}
