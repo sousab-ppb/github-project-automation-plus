@@ -43,12 +43,6 @@ const generateMutationQuery = (data, projectName, columnName, contentId, action)
 		});
 	// There are no locations for the card to move to
 	if (endLocation.length === 0) {
-		console.log(allProjects);
-		allProjects.forEach(project => {
-			console.log(project);
-			console.log(project.columns);
-			console.log(project.columns.nodes);
-		});
 		throw new Error(`Could not find the column "${columnName}" in any project`);
 	}
 

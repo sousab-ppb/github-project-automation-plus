@@ -8,7 +8,7 @@ const generateMutationQuery = require('./generate-mutation-query');
 (async () => {
 	try {
 		const token = core.getInput('repo-token');
-		const project = core.getInput('project');
+		const project = core.getInput('project') || '';
 		const column = core.getInput('column');
 		const action = core.getInput('action') || 'update';
 

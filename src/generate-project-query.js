@@ -1,5 +1,3 @@
-const projectDetector = require('./project-detector');
-
 /**
  * GraphQl query to get project and column information
  *
