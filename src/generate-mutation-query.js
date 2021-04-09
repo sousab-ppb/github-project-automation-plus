@@ -14,6 +14,9 @@ const generateMutationQuery = (data, projectName, columnName, contentId, action)
 
 	if (projectName === '') {
 		allProjects = (data.projectCards.nodes && data.projectCards.nodes.flatMap(node => node.project)) || [];
+		if (allProjects.length === 0) {
+			throw new Error(`Could not find any project where the card is associated`);
+		}
 	} else {
 		// All the projects found in organisation and repositories
 		const repoProjects = data.repository.projects.nodes || [];
@@ -25,6 +28,10 @@ const generateMutationQuery = (data, projectName, columnName, contentId, action)
 		allProjects = [...repoProjects, ...ownerProjects]
 			.filter(project => project.name === projectName)
 			.flatMap(project => project);
+		
+		if (allProjects.length === 0) {
+			throw new Error(`Could not find any project with the name "${projectName}"`);
+		}
 	}
 
 	// Find projects with the columnName for the card to move to
@@ -36,7 +43,7 @@ const generateMutationQuery = (data, projectName, columnName, contentId, action)
 		});
 	// There are no locations for the card to move to
 	if (endLocation.length === 0) {
-		throw new Error(`Could not find the column "${columnName}" or project "${projectName}"`);
+		throw new Error(`Could not find the column "${columnName}" in any project "${allProjects}"`);
 	}
 
 	const cardLocations = {};
