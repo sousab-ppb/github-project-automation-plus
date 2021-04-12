@@ -12,7 +12,7 @@ const generateMutationQuery = require('./generate-mutation-query');
 		const column = core.getInput('column');
 		const action = core.getInput('action') || 'update';
 
-		console.log(github);
+		console.log(JSON.stringify(github));
 		console.log(github.context);
 		// Get data from the current action
 		const {eventName, nodeId, url} = getActionData(github.context);
