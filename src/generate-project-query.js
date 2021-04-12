@@ -6,57 +6,56 @@
  * @param {string} project - The project to find
  */
 const projectQuery = (url, eventName, project) => (`query {
-		resource( url: "${url}" ) {
-			... on ${eventName === 'issues' ? 'Issue' : 'PullRequest'} {
-				projectCards {
-					nodes {
+	resource( url: "${url}" ) {
+		... on ${eventName === 'issues' ? 'Issue' : 'PullRequest'} {
+			projectCards {
+				nodes {
+					id
+					isArchived
+					project {
+						name
 						id
-						isArchived
-						project {
-							name
-							id
-							columns(first: 100) {
-								nodes {
-									id
-									name
-								}
+					${project === '' ? `	columns(first: 100) {
+							nodes {
+								id
+								name
+							}
+						}
+					}` : '}'}
+				}
+			}
+		${project === '' ? '}' : `	repository {
+				projects( search: "${project}", first: 10, states: [OPEN] ) {
+					nodes {
+						name
+						id
+						columns( first: 100 ) {
+							nodes {
+								id
+								name
 							}
 						}
 					}
 				}
-				${project === '' ? '' : `repository {
-					projects( search: "${project}", first: 10, states: [OPEN] ) {
-						nodes {
-							name
-							id
-							columns( first: 100 ) {
-								nodes {
-									id
-									name
-								}
-							}
-						}
-					}
-					owner {
-						... on ProjectOwner {
-							projects( search: "${project}", first: 10, states: [OPEN] ) {
-								nodes {
-									name
-									id
-									columns( first: 100 ) {
-										nodes {
-											id
-											name
-										}
+				owner {
+					... on ProjectOwner {
+						projects( search: "${project}", first: 10, states: [OPEN] ) {
+							nodes {
+								name
+								id
+								columns( first: 100 ) {
+									nodes {
+										id
+										name
 									}
 								}
 							}
 						}
 					}
-				}`
 				}
 			}
-		}
-	}`);
+		}`}
+	}
+}`);
 
 module.exports = projectQuery;

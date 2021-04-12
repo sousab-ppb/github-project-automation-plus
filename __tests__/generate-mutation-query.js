@@ -191,7 +191,7 @@ const dataNoColumn = {
 test('generateMutationQuery should fail if it cannot find a matching column', t => {
 	const error = t.throws(() => generateMutationQuery(dataNoColumn, project, column, nodeId));
 
-	t.is(error.message, `Could not find the column "${column}" or project "${project}"`);
+	t.is(error.message, `Could not find the column "${column}" in any project`);
 });
 
 const dataNoProject = {
@@ -226,5 +226,5 @@ const dataNoProject = {
 test('generateMutationQuery should fail if it cannot find a matching project', t => {
 	const error = t.throws(() => generateMutationQuery(dataNoProject, project, column, nodeId));
 
-	t.is(error.message, `Could not find the column "${column}" or project "${project}"`);
+	t.is(error.message, `Could not find any project with the name "${project}"`);
 });

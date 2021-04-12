@@ -15,7 +15,7 @@ const generateMutationQuery = (data, projectName, columnName, contentId, action)
 	if (projectName === '') {
 		allProjects = (data.projectCards.nodes && data.projectCards.nodes.flatMap(node => node.project)) || [];
 		if (allProjects.length === 0) {
-			throw new Error(`Could not find any project where the card is associated`);
+			throw new Error('Could not find any project where the card is associated');
 		}
 	} else {
 		// All the projects found in organisation and repositories
@@ -28,7 +28,7 @@ const generateMutationQuery = (data, projectName, columnName, contentId, action)
 		allProjects = [...repoProjects, ...ownerProjects]
 			.filter(project => project.name === projectName)
 			.flatMap(project => project);
-		
+
 		if (allProjects.length === 0) {
 			throw new Error(`Could not find any project with the name "${projectName}"`);
 		}
